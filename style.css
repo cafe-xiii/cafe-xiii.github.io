@@ -181,6 +181,23 @@ body {
   transform: translateX(3px);
 }
 
+.quote-container {
+  padding: 25px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+#coffee-quote {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: #ac9b89;
+  font-family: "Amiri", "Traditional Arabic", serif;
+  display: inline-block;
+  padding-left: 4px;
+  white-space: pre-wrap;
+  animation: blinkCursor 0.8s infinite;
+}
+
 /* Secondary Link Variant */
 .link-card.secondary {
   background: rgba(10, 23, 18, 0.4);
