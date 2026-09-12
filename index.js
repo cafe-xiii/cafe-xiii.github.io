@@ -84,9 +84,9 @@ function startSlotMachineEffect() {
   localStorage.setItem("lastQuoteIndex", targetIndex);
 
   // Slot machine animation parameters
-  let delay = 40;          // Initial rapid speed (ms)
-  const maxDelay = 350;     // Target slow speed before stopping
-  const speedStep = 25;     // Deceleration increment
+  let delay = 50; // Initial rapid speed (ms)
+  const maxDelay = 200; // Target slow speed before stopping
+  const speedStep = 20; // Deceleration increment
   let currentTempIndex = 0;
 
   quoteElement.classList.remove("revealed");
@@ -94,15 +94,15 @@ function startSlotMachineEffect() {
   function rollSlot() {
     // Show next temporary quote
     currentTempIndex = (currentTempIndex + 1) % quotes.length;
-    quoteElement.textContent = `« ${quotes[currentTempIndex]} »`;
+    quoteElement.textContent = `${quotes[currentTempIndex]}`;
 
     if (delay < maxDelay) {
       delay += speedStep; // Slow down the slot wheel
       setTimeout(rollSlot, delay);
     } else {
       // Final lock-in on target quote
-      quoteElement.textContent = `« ${quotes[targetIndex]} »`;
-      
+      quoteElement.textContent = `${quotes[targetIndex]}`;
+
       // Trigger growth and brightening effect
       setTimeout(() => {
         quoteElement.classList.add("revealed");
