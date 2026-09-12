@@ -71,33 +71,46 @@ const quotes = [
   "أَحْيَانًا يَكُونُ الابْتِعَادُ أَرْحَمَ مِنَ البَقَاءِ.",
 ];
 
-function startTypingEffect() {
+function startSlotMachineEffect() {
   const quoteElement = document.getElementById("coffee-quote");
   let lastIndex = localStorage.getItem("lastQuoteIndex");
-  let randomIndex;
+  let targetIndex;
 
-  // Pick a random quote avoiding immediate repeats
+  // Choose the winning quote (avoiding immediate repeats)
   do {
-    randomIndex = Math.floor(Math.random() * quotes.length);
-  } while (quotes.length > 1 && randomIndex == lastIndex);
+    targetIndex = Math.floor(Math.random() * quotes.length);
+  } while (quotes.length > 1 && targetIndex == lastIndex);
 
-  localStorage.setItem("lastQuoteIndex", randomIndex);
+  localStorage.setItem("lastQuoteIndex", targetIndex);
 
-  const fullText = `« ${quotes[randomIndex]} »`;
-  let charIndex = 0;
-  const speed = 35; // Typing speed in milliseconds (adjust as needed)
+  // Slot machine animation parameters
+  let delay = 40;          // Initial rapid speed (ms)
+  const maxDelay = 350;     // Target slow speed before stopping
+  const speedStep = 25;     // Deceleration increment
+  let currentTempIndex = 0;
 
-  quoteElement.textContent = ""; // Clear existing content
+  quoteElement.classList.remove("revealed");
 
-  function typeChar() {
-    if (charIndex < fullText.length) {
-      quoteElement.textContent += fullText.charAt(charIndex);
-      charIndex++;
-      setTimeout(typeChar, speed);
+  function rollSlot() {
+    // Show next temporary quote
+    currentTempIndex = (currentTempIndex + 1) % quotes.length;
+    quoteElement.textContent = `« ${quotes[currentTempIndex]} »`;
+
+    if (delay < maxDelay) {
+      delay += speedStep; // Slow down the slot wheel
+      setTimeout(rollSlot, delay);
+    } else {
+      // Final lock-in on target quote
+      quoteElement.textContent = `« ${quotes[targetIndex]} »`;
+      
+      // Trigger growth and brightening effect
+      setTimeout(() => {
+        quoteElement.classList.add("revealed");
+      }, 50);
     }
   }
 
-  typeChar();
+  rollSlot();
 }
 
-window.addEventListener("DOMContentLoaded", startTypingEffect);
+window.addEventListener("DOMContentLoaded", startSlotMachineEffect);
